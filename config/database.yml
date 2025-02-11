@@ -1,0 +1,21 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: checkmate-12   # Your PostgreSQL username
+  password: @Emirate$12  # Your PostgreSQL password
+  host: localhost
+
+development:
+  <<: *default
+  database: book_lending_development
+
+test:
+  <<: *default
+  database: book_lending_test
+
+production:
+  <<: *default
+  database: book_lending_production
+  username: checkmate-12
+  password: @Emirate$12

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Book Lending" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+    <%= turbo_include_tags %>
+
+  </head>
+
+  <body>
+    <!-- Flash Toast Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 space-y-4"></div>
+
+    <main class="container mx-auto px-5 min-h-screen">
+      <%= yield %>
+    </main>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        <% if flash[:notice].present? %>
+          showToast("<%= escape_javascript(flash[:notice]) %>", "success");
+        <% elsif flash[:alert].present? %>
+          showToast("<%= escape_javascript(flash[:alert]) %>", "error");
+        <% end %>
+      });
+      function showToast(message, type) {
+        const toastContainer = document.getElementById("toast-container");
+        const toast = document.createElement("div");
+
+        const bgColor = type === "success" ? "bg-green-500" : "bg-red-500";
+        const borderColor = type === "success" ? "border-green-600" : "border-red-600";
+
+        toast.className = `max-w-sm w-full text-white px-4 py-3 rounded-lg shadow-lg border ${bgColor} ${borderColor} flex items-center space-x-3 animate-fadeIn`;
+        toast.innerHTML = `
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M6 18L18 6M6 6l12 12'}"></path>
+          </svg>
+          <span>${message}</span>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+          toast.classList.add("opacity-0", "transition-opacity", "duration-300");
+          setTimeout(() => toast.remove(), 500);
+        }, 3000);
+      }
+    </script>
+  </body>
+</html>

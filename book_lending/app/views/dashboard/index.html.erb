@@ -1,0 +1,19 @@
+<div class="min-h-screen bg-gray-100 relative flex flex-col"> 
+  <!-- Welcome Message (Centered at the Top) -->
+  <header class="p-6 text-black text-center shadow-md relative">
+    <h1 class="text-3xl font-bold mt-4">Welcome to Your Dashboard, <%= current_user.name %>!</h1>
+    <p class="text-gray-500 mt-2">Manage your books here.</p>
+
+    <!-- Logout Button (Top Right) -->
+    <div class="absolute top-0 right-0">
+      <form action="<%= logout_path %>" method="post" onsubmit="return confirm('Are you sure you want to log out?');">
+        <input type="hidden" name="_method" value="delete">
+        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-xl transition duration-200">
+          Logout
+        </button>
+      </form>
+    </div>
+  </header>
+
+  <!-- Main Content (Centered) -->
+</div>
