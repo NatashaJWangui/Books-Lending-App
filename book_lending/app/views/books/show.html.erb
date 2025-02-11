@@ -1,8 +1,21 @@
-<div class="max-w-2xl mx-auto bg-white p-6 shadow-md rounded-xl mt-10">
-  <h1 class="text-3xl font-bold mb-4"><%= @book.title %></h1>
-  <p class="text-gray-700"><strong>Author:</strong> <%= @book.author %></p>
-  <p class="text-gray-700"><strong>ISBN:</strong> <%= @book.isbn %></p>
-  <p class="mt-2 text-lg font-semibold">
+<div class="max-w-2xl mx-auto bg-white p-6 shadow-md rounded-xl mt-10 text-center">
+  <!-- Book Cover Image -->
+  <div class="mb-4">
+    <%= image_tag(@book.image_url || "default_book_cover.jpg", alt: @book.title, class: "w-64 h-80 object-cover mx-auto rounded-xl shadow") %>
+  </div>
+
+  <!-- Book Details -->
+  <h1 class="text-3xl font-bold mb-2"><%= @book.title %></h1>
+  <p class="text-gray-700 text-lg"><strong>Author:</strong> <%= @book.author %></p>
+  <p class="text-gray-700 text-lg"><strong>ISBN:</strong> <%= @book.isbn %></p>
+
+  <!-- Book Description -->
+  <p class="mt-4 text-gray-600 italic text-md">
+    <%= @book.description.presence || "No description available for this book." %>
+  </p>
+
+  <!-- Availability Status -->
+  <p class="mt-4 text-lg font-semibold mb-6">
     <% if @book.available %>
       <span class="text-green-600">✅ Available</span>
     <% else %>
@@ -10,8 +23,11 @@
     <% end %>
   </p>
 
-  <div class="mt-6 flex space-x-4">
-    <%= link_to "Edit", edit_book_path(@book), class: "bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-xl" %>
-    <%= link_to "Back to Books", books_path, class: "bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-xlk" %>
+  <!-- Buttons -->
+  <div class="mt-6 flex justify-center space-x-4">
+    &nbsp;
+    <%= link_to "Edit", edit_book_path(@book), class: "px-4 py-2 bg-red-600 font-bold text-white rounded-xl shadow-md hover:bg-green-600" %>
+    &nbsp;
+    <%= link_to "Back to Books", books_path, class: "px-4 py-2 bg-blue-600 font-bold text-white rounded-xl shadow-md hover:bg-blue-700" %>
   </div>
 </div>
