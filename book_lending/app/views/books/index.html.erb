@@ -1,0 +1,47 @@
+<h1 class="text-3xl font-bold text-center my-6">Books</h1>
+
+<div class="flex justify-end mb-4">
+  <%= form_with(url: books_path, method: :get, class: "flex items-center space-x-2") do %>
+    <input type="text" name="query" placeholder="Search books..." 
+      class="w-full mt-4 px-4 py-2 border rounded-xl shadow-md focus:ring-2 focus:ring-blue-500" 
+      value="<%= params[:query] %>">
+    <%= submit_tag "Search", class: "bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-xl shadow-md" %>
+  <% end %>
+
+  <%= link_to "Add New Book", new_book_path, class: "bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-xl shadow-md" %>
+</div>
+
+<table class="w-full border-collapse bg-white shadow-md rounded-xl overflow-hidden table-auto">
+  <thead class="bg-gray-100 text-gray-700">
+    <tr class="border-b border-black">
+      <th className="px-4 py-4">#</th>
+      <th class="py-3 px-4 text-left cursor-pointer">Title</th>
+      <th class="py-3 px-4 text-left cursor-pointer">Author</th>
+      <th class="py-3 px-4 text-left cursor-pointer">ISBN</th>
+      <th class="py-3 px-4 text-center cursor-pointer">Available</th>
+      <th class="py-3 px-4 text-center cursor-pointer">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @books.each_with_index do |book, index| %>
+      <tr class="border-b border-black">
+        <td class="py-3 px-4 text-center"><%= index + 1 %></td>
+        <td class="py-3 px-4"><%= book.title %></td>
+        <td class="py-3 px-4"><%= book.author %></td>
+        <td class="py-3 px-4"><%= book.isbn %></td>
+        <td class="py-3 px-4 text-center">
+          <% if book.available %>
+            <span class="text-green-600 font-semibold">✅ Available</span>
+          <% else %>
+            <span class="text-red-600 font-semibold">❌ Borrowed</span>
+          <% end %>
+        </td>
+        <td class="py-3 px-4 flex justify-center gap-x-4">
+          <%= link_to "View", book_path(book), class: "px-4 py-2 text-white bg-blue-600 hover:underline rounded-xl font-semibold hover:bg-blue-700 shadow-md" %>
+          <%= link_to "Edit", edit_book_path(book), class: "px-4 py-2 text-white bg-green-500 hover:underline rounded-xl font-semibold shadow-md" %>
+          <%= link_to "Delete", book_path(book), method: :delete, data: { confirm: "Are you sure you want to delete this book?" }, class: "px-4 py-2 bg-red-500 text-white hover:underline hover:bg-red-600 rounded-xl font-semibold shadow-md" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

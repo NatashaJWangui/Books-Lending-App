@@ -1,0 +1,30 @@
+<div class="max-w-lg mx-auto bg-white p-6 shadow-xl rounded-xl mt-10">
+  <h1 class="text-2xl font-bold mb-4"><%= @book.new_record? ? "Add New Book" : "Edit Book" %></h1>
+
+  <%= form_with(model: @book, local: true, class: "space-y-4") do |form| %>
+    <div>
+      <%= form.label :title, class: "block font-semibold text-gray-700" %>
+      <%= form.text_field :title, class: "w-full p-2 border rounded-xl" %>
+    </div>
+
+    <div>
+      <%= form.label :author, class: "block font-semibold text-gray-700" %>
+      <%= form.text_field :author, class: "w-full p-2 border rounded-xl" %>
+    </div>
+
+    <div>
+      <%= form.label :isbn, class: "block font-semibold text-gray-700" %>
+      <%= form.text_field :isbn, class: "w-full p-2 border rounded-xl" %>
+    </div>
+
+    <div class="flex items-center">
+      <%= form.label :available, class: "font-semibold text-gray-700" %>
+      <%= form.check_box :available, class: "ml-2" %>
+    </div>
+
+    <div class="mt-4 flex space-x-4">
+      <%= form.submit class: "bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-xl" %>
+      <%= link_to "Back to Books", books_path, class: "bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-xl" %>
+    </div>
+  <% end %>
+</div>

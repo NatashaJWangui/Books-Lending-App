@@ -1,0 +1,17 @@
+<div class="max-w-2xl mx-auto bg-white p-6 shadow-md rounded-xl mt-10">
+  <h1 class="text-3xl font-bold mb-4"><%= @book.title %></h1>
+  <p class="text-gray-700"><strong>Author:</strong> <%= @book.author %></p>
+  <p class="text-gray-700"><strong>ISBN:</strong> <%= @book.isbn %></p>
+  <p class="mt-2 text-lg font-semibold">
+    <% if @book.available %>
+      <span class="text-green-600">✅ Available</span>
+    <% else %>
+      <span class="text-red-600">❌ Borrowed</span>
+    <% end %>
+  </p>
+
+  <div class="mt-6 flex space-x-4">
+    <%= link_to "Edit", edit_book_path(@book), class: "bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-xl" %>
+    <%= link_to "Back to Books", books_path, class: "bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-xlk" %>
+  </div>
+</div>

@@ -1,7 +1,15 @@
 Rails.application.routes.draw do
+  get "books/index"
+  get "books/show"
+  get "books/new"
+  get "books/create"
+  get "books/edit"
+  get "books/update"
+  get "books/destroy"
   get "dashboard/index"
   resource :session, only: [:new, :create, :destroy]
   resources :passwords, param: :token
+  resources :books
   
   # Add authentication routes
   resource :registration, only: [:new, :create] # For sign-up
