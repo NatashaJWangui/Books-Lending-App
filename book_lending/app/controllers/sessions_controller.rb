@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
       flash[:notice] = "Sign in successful."
       redirect_to dashboard_path
     else
-      redirect_to new_session_path, alert: "Try another email address or password."
+      redirect_to sign_in_path, alert: "Try another email address or password."
     end
   end
 

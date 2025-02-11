@@ -7,7 +7,6 @@ Rails.application.routes.draw do
   get "books/update"
   get "books/destroy"
   get "dashboard/index"
-  resource :session, only: [:new, :create, :destroy]
   resources :passwords, param: :token
   resources :books
   
@@ -16,6 +15,7 @@ Rails.application.routes.draw do
   get "/sign_up", to: "registrations#new", as: :sign_up
   post "/sign_up", to: "registrations#create"
   get "/sign_in", to: "sessions#new", as: :sign_in
+  post "/sign_in", to: "sessions#create"
   delete "/logout", to: "sessions#destroy", as: :logout
   get "/dashboard", to: "dashboard#index", as: :dashboard
   
