@@ -1,4 +1,4 @@
-<div>
-  <h1 class="font-bold text-4xl">Borrows#return</h1>
-  <p>Find me in app/views/borrows/return.html.erb</p>
-</div>
+<h2>Return Confirmation</h2>
+<p>You have successfully returned <strong><%= @borrow.book.title %></strong>.</p>
+
+<%= link_to "View Your Borrowed Books", borrows_path, class: "btn btn-primary" %>

@@ -23,11 +23,26 @@
     <% end %>
   </p>
 
+
   <!-- Buttons -->
   <div class="mt-6 flex justify-center space-x-4">
     <% if @book.available? %>
-      <%= button_to "Borrow Book", book_borrow_path(@book), method: :post, 
-        class: " btn bg-green-500 text-white px-4 py-2 rounded-xl shadow-md font-bold" %>
+      <% if Current.user.borrows.where(returned_at: nil).exists? %>
+        <!-- Button when user has an unreturned book -->
+        <button onclick="alert('You must return your current book before borrowing another one.')" 
+            class="bg-green-500 text-white px-4 py-2 rounded-xl shadow-md font-bold cursor-not-allowed">
+          Borrow Book
+        </button>
+      <% else %>
+        <!-- Normal Borrow Button with Confirmation -->
+        <button onclick="if(confirm('Are you sure you want to borrow this book?')) { this.nextElementSibling.submit(); }"
+          class="bg-green-500 text-white px-4 py-2 rounded-xl shadow-md font-bold">
+          Borrow Book
+        </button>
+
+        <%= form_with url: book_borrow_path(@book), method: :post, style: "display: none;" do %>
+        <% end %>
+      <% end %>  
     <% end %>
     &nbsp;
     <%= link_to "Edit", edit_book_path(@book), class: "px-4 py-2 bg-red-500 font-bold text-white rounded-xl shadow-md hover:bg-green-600" %>

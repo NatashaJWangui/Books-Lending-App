@@ -2,24 +2,28 @@ class BorrowsController < ApplicationController
   before_action :require_authentication
 
   def index
-    @borrows = Current.user.borrows.includes(:book)
+    @borrows = Current.user.borrows.includes(:book).order(borrowed_at: :desc).group_by{|borrow| borrow.book_id}
   end
 
   def create
     book = Book.find(params[:book_id])
+    borrow = Current.user.borrows.new(book: book)
 
-    if book.available?
-      borrow = Current.user.borrows.create(book: book, borrowed_at: Time.zone.now, due_date: 2.weeks.from_now)
-      
-      if borrow.persisted?
-        flash[:notice] = "You have successfully borrowed '#{book.title}'. Due date: #{borrow.due_date.strftime('%Y-%m-%d')}."
-      else
-        flash[:alert] = "Something went wrong. Please try again."
-      end
+    # Check if user already borrowed this book and hasn't returned it
+    existing_borrow = Current.user.borrows.find_by(book: book, returned_at: nil)
+
+    if existing_borrow
+      flash[:alert] = "You have already borrowed this book and must return it first."
     else
-      flash[:alert] = "This book is already borrowed."
-    end
+      borrow = Current.user.borrows.new(book: book)  
 
+      if borrow.save
+        flash[:notice] = "You have successfully borrowed '#{book.title}'. Due date: #{borrow.due_date.strftime('%%d-%m-%Y %I:%M %p')}."
+      else
+        flash[:alert] = borrow.errors.full_messages.to_sentence
+      end
+    end
+    
     redirect_to book_path(book)
   end
 

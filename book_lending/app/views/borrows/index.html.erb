@@ -1,0 +1,80 @@
+<h2 class="text-3xl font-bold text-center my-6 mb-4">Your Borrowed Books</h2>
+
+<table class="table-auto w-full border-collapse bg-white shadow-md rounded-xl overflow-hidden">
+  <thead class="bg-gray-100 text-gray-700">
+    <tr class="border-b border-black">
+      <th class="px-4 py-4">#</th>
+      <th class="py-3 px-4 text-center">Title</th>
+      <th class="py-3 px-4 text-center">Borrowed Books</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @borrows.each_with_index do |(book_id, borrows), index| %>
+      <% book = borrows.first.book %> 
+
+      <tr class="bg-white border-b border-black">
+        <td class="py-3 px-4 text-center"><%= index + 1 %></td>
+        <td class="py-3 px-4 text-center font-bold"><%= book.title %></td>
+        <td class="py-3 px-4 text-center">
+          <button onclick="toggleDropdown('<%= book_id %>')" class="px-4 py-2 text-white bg-blue-600 hover:underline rounded-xl font-semibold shadow-md">
+            Show Details
+          </button>
+        </td>
+      </tr>
+
+      <!-- Dropdown for Borrowed Books -->
+      <tr id="dropdown-<%= book_id %>" class="hidden">
+        <td colspan="3">
+          <table class="w-full border-collapse bg-gray-50 shadow-md rounded-xl mt-2">
+            <thead>
+              <tr class="border-b border-black">
+                <th class="py-3 px-4 text-center">Borrowed At</th>
+                <th class="py-3 px-4 text-center">Due Date</th>
+                <th class="py-3 px-4 text-center">Status</th>
+                <th class="py-3 px-4 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% borrows.each do |borrow| %>
+                <% overdue = borrow.due_date < Time.zone.now %>
+                <tr class="<%= overdue ? 'bg-red-100' : 'bg-white' %> border-b border-black">
+                  <td class="py-3 px-4 text-center font-semibold"><%= borrow.borrowed_at.strftime('%d-%m-%Y %I:%M %p') %></td>
+                  <td class="py-3 px-4 text-center font-semibold"><%= borrow.due_date.strftime('%d-%m-%Y %I:%M %p') %></td>
+                  <td class="py-3 px-4 text-center font-semibold">
+                    <% if borrow.returned_at.present? %>
+                      <span class="text-green-600 font-bold">✅ Returned</span>
+                    <% elsif overdue %>
+                      <span class="text-red-600 font-bold">❌ Overdue!</span>
+                    <% else %>
+                      <span class="text-blue-600 font-bold">📖 Borrowed</span>
+                    <% end %>
+                  </td>
+                  <td class="py-3 px-4 text-center">
+                    <% if borrow.returned_at.nil? %>
+                      <button onclick="if(confirm('Are you sure you want to return this book?')) { this.nextElementSibling.submit(); }"
+                        class="px-4 py-2 text-white bg-green-500 hover:underline rounded-xl font-bold shadow-md">
+                        Return
+                      </button>
+
+                      <%= form_with url: borrow_path(borrow), method: :patch, style: "display: none;" do %>
+                      <% end %>
+                    <% else %>
+                      <span class="text-blue-600 font-semibold">Returned Successfully</span>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<script>
+  function toggleDropdown(id) {
+    let dropdown = document.getElementById(`dropdown-${id}`);
+    dropdown.classList.toggle("hidden");
+  }
+</script>

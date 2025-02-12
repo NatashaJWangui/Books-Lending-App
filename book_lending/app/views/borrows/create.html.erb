@@ -1,4 +1,5 @@
-<div>
-  <h1 class="font-bold text-4xl">Borrows#create</h1>
-  <p>Find me in app/views/borrows/create.html.erb</p>
-</div>
+<h2>Borrow Confirmation</h2>
+<p>You have successfully borrowed <strong><%= @book.title %></strong>.</p>
+<p>Due date: <%= @borrow.due_date.strftime('%Y-%m-%d') %></p>
+
+<%= link_to "Back to Books", books_path, class: "btn btn-primary" %>

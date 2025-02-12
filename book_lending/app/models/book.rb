@@ -3,6 +3,6 @@ class Book < ApplicationRecord
   has_many :users, through: :borrows
 
   def available?
-    borrows.where(returned_at: nil).empty?
+    !borrows.exists?(returned_at: nil) 
   end
 end
