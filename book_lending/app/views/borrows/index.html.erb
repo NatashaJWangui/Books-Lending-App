@@ -14,7 +14,9 @@
 
       <tr class="bg-white border-b border-black">
         <td class="py-3 px-4 text-center"><%= index + 1 %></td>
-        <td class="py-3 px-4 text-center font-bold"><%= book.title %></td>
+        <td class="py-3 px-4 text-center font-bold">
+          <%= book.title %> <span class="text-blue-600 font-bold">(<%= borrows.count %>)</span>
+        </td>
         <td class="py-3 px-4 text-center">
           <button onclick="toggleDropdown('<%= book_id %>')" class="px-4 py-2 text-white bg-blue-600 hover:underline rounded-xl font-semibold shadow-md">
             Show Details
@@ -28,8 +30,9 @@
           <table class="w-full border-collapse bg-gray-50 shadow-md rounded-xl mt-2">
             <thead>
               <tr class="border-b border-black">
-                <th class="py-3 px-4 text-center">Borrowed At</th>
-                <th class="py-3 px-4 text-center">Due Date</th>
+                <th class="py-3 px-4 text-center">Date Borrowed</th>
+                <th class="py-3 px-4 text-center">Date Due</th>
+                <th class="py-3 px-4 text-center">Date Returned</th>
                 <th class="py-3 px-4 text-center">Status</th>
                 <th class="py-3 px-4 text-center">Actions</th>
               </tr>
@@ -40,6 +43,13 @@
                 <tr class="<%= overdue ? 'bg-red-100' : 'bg-white' %> border-b border-black">
                   <td class="py-3 px-4 text-center font-semibold"><%= borrow.borrowed_at.strftime('%d-%m-%Y %I:%M %p') %></td>
                   <td class="py-3 px-4 text-center font-semibold"><%= borrow.due_date.strftime('%d-%m-%Y %I:%M %p') %></td>
+                  <td class="py-3 px-4 text-center font-semibold">
+                    <% if borrow.returned_at.present? %>
+                      <%= borrow.returned_at.strftime('%d-%m-%Y %I:%M %p') %>
+                    <% else %>
+                      <span class="text-red-600">Not Returned</span>
+                    <% end %>
+                  </td>
                   <td class="py-3 px-4 text-center font-semibold">
                     <% if borrow.returned_at.present? %>
                       <span class="text-green-600 font-bold">✅ Returned</span>
@@ -56,7 +66,7 @@
                         Return
                       </button>
 
-                      <%= form_with url: borrow_path(borrow), method: :patch, style: "display: none;" do %>
+                      <%= form_with url: borrow_path(borrow), method: :patch, style: "display: none;" do |f| %>
                       <% end %>
                     <% else %>
                       <span class="text-blue-600 font-semibold">Returned Successfully</span>

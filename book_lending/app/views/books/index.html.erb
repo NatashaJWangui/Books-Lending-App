@@ -1,6 +1,13 @@
 <h1 class="text-3xl font-bold text-center my-6">Books</h1>
 
 <div class="flex justify-end mb-4">
+  <% if Current.user.email == "admin@example.com" %>
+    <%= link_to "Add New Book", new_book_path, class: " flex justify-start mt-4 bg-green-500 text-white font-semibold px-4 py-2 rounded-xl shadow-md hover:bg-green-700" %>
+  <% end %>
+  &nbsp;
+  &nbsp;
+  &nbsp;
+  &nbsp;
   <%= form_with(url: books_path, method: :get, class: "flex items-center space-x-2") do %>
     <input type="text" name="query" placeholder="Search books..." 
       class="w-full mt-4 px-4 py-2 border rounded-xl shadow-md focus:ring-2 focus:ring-blue-500" 
@@ -14,13 +21,14 @@
       <%= link_to "Clear", books_path, class: "mt-4 bg-red-500 text-white font-semibold px-4 py-2 rounded-xl shadow-md" %>
     <% end %>
   <% end %>
-
 </div>
+
+
 
 <table class="w-full border-collapse bg-white shadow-md rounded-xl overflow-hidden table-auto">
   <thead class="bg-gray-100 text-gray-700">
     <tr class="border-b border-black">
-      <th className="px-4 py-4">#</th>
+      <th class="px-4 py-4">#</th>
       <th class="py-3 px-4 text-left cursor-pointer">Title</th>
       <th class="py-3 px-4 text-left cursor-pointer">Author</th>
       <th class="py-3 px-4 text-left cursor-pointer">ISBN</th>
@@ -44,10 +52,23 @@
         </td>
         <td class="py-3 px-4 flex justify-center gap-x-4">
           <%= link_to "View", book_path(book), class: "px-4 py-2 text-white bg-blue-600 hover:underline rounded-xl font-semibold hover:bg-blue-700 shadow-md" %>
-            &nbsp;
-          <%= link_to "Edit", book_path(book), class: "px-4 py-2 text-white bg-green-500 hover:underline rounded-xl font-semibold shadow-md" %>
-            &nbsp;
-          <%= link_to "Delete", book_path(book), method: :delete, data: { confirm: "Are you sure you want to delete this book?" }, class: "px-4 py-2 bg-red-500 text-white hover:underline hover:bg-red-600 rounded-xl font-semibold shadow-md" %>
+          &nbsp;
+          <% if book.available? %>
+            <button onclick="if(confirm('Are you sure you want to borrow this book?')) { this.nextElementSibling.submit(); }"
+              class="px-4 py-2 bg-green-500 text-white font-semibold rounded-xl shadow-md hover:bg-yellow-600">
+              Borrow
+            </button>
+
+            <%= form_with url: book_borrow_path(book), method: :post, style: "display: none;" do |f| %>
+              
+            <% end %>
+          <% end %>
+          &nbsp;
+          <% if Current.user.email == "admin@example.com" %>
+            <%= link_to "Edit", edit_book_path(book), class: "px-4 py-2 text-white bg-green-500 hover:underline rounded-xl font-semibold shadow-md" %>
+              &nbsp;
+            <%= link_to "Delete", book_path(book), method: :delete, data: { confirm: "Are you sure you want to delete this book?" }, class: "px-4 py-2 bg-red-500 text-white hover:underline hover:bg-red-600 rounded-xl font-semibold shadow-md" %>
+          <% end %>
         </td>
       </tr>
     <% end %>

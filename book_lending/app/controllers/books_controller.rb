@@ -18,9 +18,12 @@ class BooksController < ApplicationController
 
   def create
     @book = Book.new(book_params)
+
     if @book.save
-      redirect_to @book, notice: "Book added successfully."
+      flash[:notice] = "📚 Book successfully created!"
+      redirect_to new_book_path
     else
+      flash.now[:alert] = "🚨 Oops! Please correct the errors below."
       render :new, status: :unprocessable_entity
     end
   end
@@ -38,7 +41,7 @@ class BooksController < ApplicationController
 
   def destroy
     @book.destroy
-    redirect_to books_path, notice: "Book deleted successfully."
+    redirect_to book_path, notice: "Book deleted successfully."
   end
 
   private
@@ -49,6 +52,6 @@ class BooksController < ApplicationController
   
 
   def book_params
-    params.require(:book).permit(:title, :author, :isbn, :available)
+    params.require(:book).permit(:title, :author, :isbn, :available , :image_url, :description)
   end
 end
