@@ -1,6 +1,17 @@
 <div class="max-w-2xl mx-auto bg-white p-6 shadow-xl rounded-xl mt-10 text-center">
   <h1 class="text-3xl font-bold mb-4"><%= @book.new_record? ? "Add New Book" : "Edit Book" %></h1>
 
+  <% if flash[:notice] %>
+    <div class="alert alert-success">
+      <%= flash[:notice] %>
+    </div>
+  <% elsif flash[:alert] %>
+    <div class="alert alert-danger">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
+
   <%= form_with(model: @book, local: true, class: "space-y-4 text-lg") do |form| %>
     
     <!-- Book Cover Preview -->

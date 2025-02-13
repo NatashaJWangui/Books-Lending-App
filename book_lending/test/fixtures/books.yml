@@ -1,17 +1,15 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  title: MyString
-  author: MyString
-  isbn: 1234567890
-  available: false
-  created_at: <%= Time.now %>
-  updated_at: <%= Time.now %>
+  title: "Book One"
+  author: "Author One"
+  isbn: "111111"
+  available: true
+  image_url: "https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Along_Came_A_Spider_1993_cover.jpg/220px-Along_Came_A_Spider_1993_cover.jpg"
+  description: "A good book"
 
 two:
-  title: MyString
-  author: MyString
-  isbn: 0987654321
+  title: "Book Two"
+  author: "Author Two"
+  isbn: "222222"
   available: false
-  created_at: <%= Time.now %>
-  updated_at: <%= Time.now %>
+  image_url: "https://upload.wikimedia.org/wikipedia/en/thumb/1/15/The_Book_Cover_Of_The_Partner.jpg/220px-The_Book_Cover_Of_The_Partner.jpg"
+  description: "Another good book"

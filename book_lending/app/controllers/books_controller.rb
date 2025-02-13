@@ -10,11 +10,6 @@ class BooksController < ApplicationController
   end
 
   def show
-    @book = Book.find(params[:id])
-    if @book.nil?
-      flash[:alert] = "Book not found"
-      redirect_to books_path
-    end
   end
 
   def new
@@ -28,7 +23,7 @@ class BooksController < ApplicationController
       flash[:notice] = "📚 Book successfully created!"
       redirect_to new_book_path
     else
-      flash.now[:alert] = "🚨 Oops! Please correct the errors below."
+      flash[:alert] = "🚨 Oops! Please correct the errors below."
       render :new, status: :unprocessable_entity
     end
   end
@@ -46,7 +41,7 @@ class BooksController < ApplicationController
 
   def destroy
     @book.destroy
-    redirect_to book_path, notice: "Book deleted successfully."
+    redirect_to books_path, notice: "Book deleted successfully."
   end
 
   private
@@ -54,9 +49,8 @@ class BooksController < ApplicationController
   def set_book
     @book = Book.find(params[:id])
   end
-  
 
   def book_params
-    params.require(:book).permit(:title, :author, :isbn, :available , :image_url, :description)
+    params.require(:book).permit(:title, :author, :isbn, :available, :image_url, :description)
   end
 end

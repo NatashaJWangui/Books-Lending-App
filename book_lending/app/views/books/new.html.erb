@@ -1,15 +1,6 @@
 <div class="max-w-2xl mx-auto bg-white p-6 shadow-xl rounded-xl mt-10 text-center">
   <h1 class="text-3xl font-bold mb-4"><%= @book.new_record? ? "Add New Book" : "Edit Book" %></h1>
 
-  <!-- Validation Rules -->
-  <div class="border-l-4 text-red-600 p-4 rounded-xl mb-4 text-center">
-    <h2 class="font-bold text-lg">Book Submission Rules:</h2>
-    <ul class="text-center space-y-2 text-lg">
-      <li class="before:content-['✅'] before:mr-2">Title, Author, and ISBN must be present.</li>
-      <li class="before:content-['✅'] before:mr-2">ISBN must be unique.</li>
-    </ul>
-  </div>
-
   <% if flash[:notice] %>
     <div class="text-green-500 p-4 rounded-xl shadow-md mb-2">
       ✅ <%= flash[:notice] %>
