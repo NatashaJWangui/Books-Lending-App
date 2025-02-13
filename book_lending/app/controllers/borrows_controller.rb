@@ -18,7 +18,7 @@ class BorrowsController < ApplicationController
       borrow = Current.user.borrows.new(book: book)  
 
       if borrow.save
-        flash[:notice] = "You have successfully borrowed '#{book.title}'. Due date: #{borrow.due_date.strftime('%%d-%m-%Y %I:%M %p')}."
+        flash[:notice] = "You have successfully borrowed '#{book.title}'. Due date: #{borrow.due_date.strftime('%d-%m-%Y %I:%M %p')}."
       else
         flash[:alert] = borrow.errors.full_messages.to_sentence
       end

@@ -1,5 +1,12 @@
 <h2 class="text-3xl font-bold text-center my-6 mb-4">Your Borrowed Books</h2>
 
+<div class="flex justify-end items-center mb-4">
+  <!-- Return to Dashboard -->
+  <%= link_to "Return to Dashboard", dashboard_path, class: "bg-green-500 text-white font-semibold px-4 py-2 rounded-xl shadow-md hover:bg-green-700" %>
+  &nbsp;
+  <%= link_to "Back to Books", books_path, class: "px-4 py-2 bg-blue-600 font-bold text-white rounded-xl shadow-md hover:bg-blue-700" %>
+</div>
+
 <table class="table-auto w-full border-collapse bg-white shadow-md rounded-xl overflow-hidden">
   <thead class="bg-gray-100 text-gray-700">
     <tr class="border-b border-black">
@@ -40,21 +47,21 @@
             <tbody>
               <% borrows.each do |borrow| %>
                 <% overdue = borrow.due_date < Time.zone.now %>
-                <tr class="<%= overdue ? 'bg-red-100' : 'bg-white' %> border-b border-black">
+                <tr class="<%= overdue ? 'bg-red-500' : 'bg-white' %> border-b border-black">
                   <td class="py-3 px-4 text-center font-semibold"><%= borrow.borrowed_at.strftime('%d-%m-%Y %I:%M %p') %></td>
                   <td class="py-3 px-4 text-center font-semibold"><%= borrow.due_date.strftime('%d-%m-%Y %I:%M %p') %></td>
                   <td class="py-3 px-4 text-center font-semibold">
                     <% if borrow.returned_at.present? %>
                       <%= borrow.returned_at.strftime('%d-%m-%Y %I:%M %p') %>
                     <% else %>
-                      <span class="text-red-600">Not Returned</span>
+                      <span class="text-red-500">Not Returned</span>
                     <% end %>
                   </td>
                   <td class="py-3 px-4 text-center font-semibold">
                     <% if borrow.returned_at.present? %>
                       <span class="text-green-600 font-bold">✅ Returned</span>
                     <% elsif overdue %>
-                      <span class="text-red-600 font-bold">❌ Overdue!</span>
+                      <span class="text-red-500 font-bold">❌ Overdue!</span>
                     <% else %>
                       <span class="text-blue-600 font-bold">📖 Borrowed</span>
                     <% end %>

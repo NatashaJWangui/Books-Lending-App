@@ -2,7 +2,7 @@
   <!-- Welcome Message -->
   <header class="p-6 text-black text-center shadow-md relative">
     <h1 class="text-3xl font-bold mt-4">Welcome to Your Dashboard, <%= current_user.name %>!</h1>
-    <p class="text-gray-500 mt-2">Manage your books here.</p>
+    <p class="text-gray-500 mt-2 underline font-semibold">Activity Summary</p>
 
     <!-- Logout Button (Top Right) -->
     <div class="absolute top-0 right-0">
@@ -14,71 +14,155 @@
       </form>
     </div>
   </header>
-
-  <!-- Borrowed Books Section -->
-  <div class="max-w-4xl mx-auto mt-8 bg-white p-6 rounded-lg shadow-md">
-    <h3 class="text-3xl font-bold mb-4 text-center underline uppercase">Currently Borrowed Books</h3>
-
-    <% if current_user.borrows.any? %>
-      <table class="table-auto w-full border-collapse bg-white shadow-md rounded-xl overflow-hidden">
-        <thead class="bg-gray-100 text-gray-700">
-          <tr class="border-b border-black">
-            <th class="px-4 py-4">#</th>
-            <th class="px-4 py-4">Title</th>
-            <th class="py-3 px-4 text-center">Date Borrowed</th>
-            <th class="py-3 px-4 text-center">Date Due</th>
-            <th class="py-3 px-4 text-center">Status</th>
-            <th class="py-3 px-4 text-center">Actions</th>
+  <div class="flex w-full justify-start space-x-8 mt-8">
+    <!-- Borrowing Summary -->
+    <div class="max-w-4xl mt-8 bg-white p-6 rounded-xl shadow-md">
+      <h3 class="text-2xl font-bold mb-4 text-left underline">📊 Borrowing Summary</h3>
+      <table class="table-auto border-collapse border border-gray-300 text-left">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="px-4 py-2 border border-gray-300">#</th>
+            <th class="px-4 py-2 border border-gray-300">Category</th>
+            <th class="px-4 py-2 border border-gray-300">Count</th>
           </tr>
         </thead>
         <tbody>
-          <% current_user.borrows.where(returned_at: nil).order(due_date: :asc).each_with_index do |borrow, index| %>
-            <% overdue = borrow.due_date < Time.zone.now %>
-            <tr class="<%= overdue ? 'bg-red-600' : 'bg-white' %> border-b border-black">
-              <td class="py-3 px-4 text-center"><%= index + 1 %></td>
-              <td class="py-3 px-4 text-center font-semibold"><%= borrow.book.title %></td>
-              <td class="py-3 px-4 text-center font-semibold"><%= borrow.borrowed_at.strftime('%d-%m-%Y') %></td>
-              <td class="py-3 px-4 text-center font-semibold"><%= borrow.due_date.strftime('%d-%m-%Y') %></td>
-              <td class="py-3 px-4 text-center font-semibold">
-                <% if overdue %>
-                  <span class="text-red-600 font-bold">❌ Overdue!</span>
-                <% else %>
-                  <span class="text-blue-600 font-bold">📖 Borrowed</span>
-                <% end %>
-              </td>
-              <td class="py-3 px-4 text-center">
-                <div class="flex justify-center space-x-2"> 
-                  <!-- View Book Button -->
-                  <%= link_to "View", book_path(borrow.book), 
-                    class: "px-4 py-2 text-white bg-blue-600 rounded-xl font-semibold shadow-md" %>
-                  &nbsp;
-                  &nbsp;
-
-                  <!-- Return Button -->
-                  <button onclick="if(confirm('Are you sure you want to return this book?')) { this.nextElementSibling.submit(); }"
-                    class="px-4 py-2 text-white bg-green-500 rounded-xl font-bold shadow-md">
-                    Return
-                  </button>
-                  <%= form_with url: borrow_path(borrow), method: :patch, style: "display: none;" do %>
-                  <% end %>
-                </div>
-              </td>
-            </tr>
-          <% end %>
+          <tr>
+            <td class="px-4 py-2 border border-gray-300 font-semibold">1</td>
+            <td class="px-4 py-2 border border-gray-300 font-semibold">Total Borrowed</td>
+            <td class="px-4 py-2 border border-gray-300 font-semibold"><%= current_user.borrows.count > 0 ? current_user.borrows.count : 'No content available yet' %></td>
+          </tr>
+          <tr>
+            <td class="px-4 py-2 border border-gray-300 font-semibold">2</td>
+            <td class="px-4 py-2 border border-gray-300 font-semibold">Currently Borrowed</td>
+            <td class="px-4 py-2 border border-gray-300 font-semibold"><%= current_user.borrows.where(returned_at: nil).count > 0 ? current_user.borrows.where(returned_at: nil).count : 'No content available yet' %></td>
+          </tr>
+          <tr>
+            <td class="px-4 py-2 border border-gray-300 font-semibold">3</td>
+            <td class="px-4 py-2 border border-gray-300 font-semibold">Overdue Books</td>
+            <td class="px-4 py-2 border border-gray-300 font-semibold"><%= current_user.borrows.where("due_date < ? AND returned_at IS NULL", Time.zone.now).count > 0 ? current_user.borrows.where("due_date < ? AND returned_at IS NULL", Time.zone.now).count : 'No overdue books available yet' %></td>
+          </tr>
         </tbody>
       </table>
-    <% else %>
-      <p class="text-black-600 text-3xl font-bold text-center mt-4">You have no borrowed books.</p>
-    <% end %>
+    </div>
+  
 
-    <!-- Buttons for Navigation -->
-    <div class="mt-6 flex justify-between">
-      <a href="<%= books_path %>" class="text-blue-600 font-semibold hover:underline mt-4">
-        📚 Browse Books
-      </a>
-      <a href="<%= borrows_path %>" class="text-blue-600 font-semibold hover:underline mt-4 ">
-        📜 View Borrowing History
-      </a>
+    <!-- Due Soon Notifications -->
+    <div class="max-w-4xl mx-auto mt-8 bg-white p-6 rounded-xl shadow-md">
+      <h3 class="text-2xl font-bold mb-6 underline">⏳ Due Soon</h3>
+      <% due_soon = current_user.borrows.where("due_date BETWEEN ? AND ? AND returned_at IS NULL", Time.zone.now, 3.days.from_now) %>
+      <% if due_soon.any? %>
+        <ul class="space-y-2">
+          <% due_soon.each do |borrow| %>
+            <li class="text-red-500 font-semibold">⚠️ <%= borrow.book.title %> - Due on <%= borrow.due_date.strftime('%d-%m-%Y %I:%M %p') %></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-black font-bold">No books due soon.</p>
+      <% end %>
+    </div>
+
+    <!-- Recently Returned Books -->
+    <div class="max-w-4xl mx-auto mt-8 bg-white p-6 rounded-xl shadow-md">
+      <h3 class="text-2xl font-bold mb-6 underline">🔄 Recently Returned Books</h3>
+      <% recent_returns = current_user.borrows.where.not(returned_at: nil).order(returned_at: :desc).limit(5) %>
+      <% if recent_returns.any? %>
+        <ul class="space-y-2">
+          <% recent_returns.each do |borrow| %>
+            <li class="text-black font-semibold">📖 <%= borrow.book.title %> - Returned on <%= borrow.returned_at.strftime('%d-%m-%Y %I:%M %p') %></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-gray-500 font-bold">No recently returned books.</p>
+      <% end %>
+    </div>
+
+  </div>
+
+
+  <!-- Borrowed Books Section -->
+  <div class="flex justify-center w-full mt-8">
+    <div class="max-w-4xl mx-auto mt-8 bg-white p-6 rounded-lg shadow-md">
+      <h3 class="text-3xl font-bold mb-4 text-center underline uppercase">Currently Borrowed Books</h3>
+
+      <% if current_user.borrows.where(returned_at: nil).any? %>
+        <table class="table-auto w-full border-collapse bg-white shadow-md rounded-xl overflow-hidden">
+          <thead class="bg-gray-100 text-gray-700">
+            <tr class="border-b border-black">
+              <th class="px-4 py-4">#</th>
+              <th class="px-4 py-4">Title</th>
+              <th class="py-3 px-4 text-center">Date Borrowed</th>
+              <th class="py-3 px-4 text-center">Date Due</th>
+              <th class="py-3 px-4 text-center">Status</th>
+              <th class="py-3 px-4 text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% current_user.borrows.where(returned_at: nil).order(due_date: :asc).each_with_index do |borrow, index| %>
+              <% overdue = borrow.due_date < Time.zone.now %>
+              <tr class="<%= overdue ? 'bg-red-500' : 'bg-white' %> border-b border-black">
+                <td class="py-3 px-4 text-center"><%= index + 1 %></td>
+                <td class="py-3 px-4 text-center font-semibold"><%= borrow.book.title %></td>
+                <td class="py-3 px-4 text-center font-semibold"><%= borrow.borrowed_at.strftime('%d-%m-%Y') %></td>
+                <td class="py-3 px-4 text-center font-semibold"><%= borrow.due_date.strftime('%d-%m-%Y') %></td>
+                <td class="py-3 px-4 text-center font-semibold">
+                  <% if overdue %>
+                    <span class="text-red-500 font-bold">❌ Overdue!</span>
+                  <% else %>
+                    <span class="text-blue-600 font-bold">📖 Borrowed</span>
+                  <% end %>
+                </td>
+                <td class="py-3 px-4 text-center">
+                  <div class="flex justify-center space-x-2"> 
+                    <!-- View Book Button -->
+                    <%= link_to "View", book_path(borrow.book), 
+                      class: "px-4 py-2 text-white bg-blue-600 rounded-xl font-semibold shadow-md" %>
+                    &nbsp;
+                    &nbsp;
+
+                    <!-- Return Button -->
+                    <button onclick="if(confirm('Are you sure you want to return this book?')) { this.nextElementSibling.submit(); }"
+                      class="px-4 py-2 text-white bg-green-500 rounded-xl font-bold shadow-md">
+                      Return
+                    </button>
+                    <%= form_with url: borrow_path(borrow), method: :patch, style: "display: none;" do %>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p class="text-gray-500 text-3xl font-bold text-center mt-4">You have no borrowed books.</p>
+      <% end %>
+
+      <!-- Buttons for Navigation -->
+      <div class="mt-6 flex justify-between">
+        <a href="<%= books_path %>" class="text-blue-600 font-bold hover:underline mt-4">
+          📚 Browse More Books
+        </a>
+        <a href="<%= borrows_path %>" class="text-blue-600 font-bold hover:underline mt-4">
+          📜 View Borrowing History
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Personalized Book Recommendations -->
+  <div class="flex w-full justify-center space-x-8 mt-8">
+    <div class="max-w-4xl mx-auto mt-8 bg-white p-6 rounded-xl shadow-md">
+      <h3 class="text-2xl font-bold mb-4 underline">📚 Recommended for You</h3>
+      <% recommended_books = Book.where.not(id: current_user.borrows.pluck(:book_id)).order("RANDOM()").limit(3) %>
+      <% if recommended_books.any? %>
+        <ul>
+          <% recommended_books.each do |book| %>
+            <li class="text-blue-600 font-semibold">📘 <%= link_to book.title, book_path(book) %></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-gray-500 font-bold">No recommendations available at this time.</p>
+      <% end %>
     </div>
   </div>
 </div>
