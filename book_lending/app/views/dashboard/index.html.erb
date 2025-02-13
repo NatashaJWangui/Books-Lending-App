@@ -1,4 +1,13 @@
 <div class="min-h-screen bg-gray-100 relative flex flex-col">
+  <% if flash[:notice] %>
+    <div class="alert alert-success">
+      <%= flash[:notice] %>
+    </div>
+  <% elsif flash[:alert] %>
+    <div class="alert alert-danger">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
   <!-- Welcome Message -->
   <header class="p-6 text-black text-center shadow-md relative">
     <h1 class="text-3xl font-bold mt-4">Welcome to Your Dashboard, <%= current_user.name %>!</h1>
@@ -85,7 +94,7 @@
     <div class="max-w-4xl mx-auto mt-8 bg-white p-6 rounded-lg shadow-md">
       <h3 class="text-3xl font-bold mb-4 text-center underline uppercase">Currently Borrowed Books</h3>
 
-      <% if current_user.borrows.where(returned_at: nil).any? %>
+      <% if current_user.borrows.any? %>
         <table class="table-auto w-full border-collapse bg-white shadow-md rounded-xl overflow-hidden">
           <thead class="bg-gray-100 text-gray-700">
             <tr class="border-b border-black">

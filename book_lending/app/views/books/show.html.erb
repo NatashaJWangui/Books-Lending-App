@@ -1,7 +1,21 @@
+<% if flash[:notice] %>
+  <div class="alert alert-success">
+    <%= flash[:notice] %>
+  </div>
+<% elsif flash[:alert] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
+
 <div class="max-w-2xl mx-auto bg-white p-6 shadow-md rounded-xl mt-10 text-center">
   <!-- Book Cover Image -->
   <div class="mb-4">
-    <%= image_tag(@book.image_url, alt: @book.title, class: "w-64 h-80 object-cover mx-auto rounded-xl shadow") %>
+    <% if @book.image_url.present? %>
+      <%= image_tag(@book.image_url, alt: @book.title, class: "w-64 h-80 object-cover mx-auto rounded-xl shadow") %>
+    <% else %>
+      <p>No image available</p>
+    <% end %>
   </div>
 
   <!-- Book Details -->

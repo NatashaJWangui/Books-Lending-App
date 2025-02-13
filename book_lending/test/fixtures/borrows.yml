@@ -4,12 +4,12 @@ one:
   user: one
   book: one
   borrowed_at: 2025-02-11 21:44:41
-  due_date: 2025-02-11 21:44:41
-  returned: false
+  due_date: 2025-02-25 21:44:41
+  returned_at: ''
 
 two:
   user: two
   book: two
   borrowed_at: 2025-02-11 21:44:41
-  due_date: 2025-02-11 21:44:41
-  returned: false
+  due_date: 2025-02-25 21:44:41
+  returned_at: 2025-02-13 10:00:00

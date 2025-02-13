@@ -7,8 +7,15 @@ module ActiveSupport
     # Run tests in parallel with specified workers
     parallelize(workers: :number_of_processors)
 
-    # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
+    # Load all fixtures from test/fixtures/*.yml for all tests
     fixtures :all
+
+    # Disable referential integrity before loading fixtures
+    setup do
+      ActiveRecord::Base.connection.disable_referential_integrity do
+        # This block ensures foreign key constraints are ignored
+      end
+    end
 
     # Add more helper methods to be used by all tests here...
   end

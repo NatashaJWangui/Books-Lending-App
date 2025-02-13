@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
     if user = User.authenticate_by(params.permit(:email, :password))
       start_new_session_for user
       flash[:notice] = "Sign in successful."
-      redirect_to dashboard_path
+      redirect_to session.delete(:return_to_after_authenticating) || dashboard_path
     else
       redirect_to sign_in_path, alert: "Try another email address or password."
     end

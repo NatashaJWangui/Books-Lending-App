@@ -7,7 +7,6 @@ class BorrowsController < ApplicationController
 
   def create
     book = Book.find(params[:book_id])
-    borrow = Current.user.borrows.new(book: book)
 
     # Check if user already borrowed this book and hasn't returned it
     existing_borrow = Current.user.borrows.find_by(book: book, returned_at: nil)
@@ -15,7 +14,7 @@ class BorrowsController < ApplicationController
     if existing_borrow
       flash[:alert] = "You have already borrowed this book and must return it first."
     else
-      borrow = Current.user.borrows.new(book: book)  
+      borrow = Current.user.borrows.new(book: book, borrowed_at: Time.zone.now, due_date: Time.zone.now + 2.weeks)  
 
       if borrow.save
         flash[:notice] = "You have successfully borrowed '#{book.title}'. Due date: #{borrow.due_date.strftime('%d-%m-%Y %I:%M %p')}."
