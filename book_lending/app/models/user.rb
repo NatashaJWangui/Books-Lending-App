@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :borrows, dependent: :destroy
   has_many :borrowed_books, through: :borrows, source: :book
 
-  normalizes :email_address, with: ->(e) { e.strip.downcase }
+  normalizes :email, with: ->(e) { e.strip.downcase }
   validates :name, presence: true
+  validates :email, presence: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i, message: "is invalid" }
 end

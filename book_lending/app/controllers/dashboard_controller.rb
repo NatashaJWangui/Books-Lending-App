@@ -7,6 +7,10 @@ class DashboardController < ApplicationController
   private
 
   def require_login
-    redirect_to new_session_path, alert: "Please log in to continue." unless current_user
+    unless current_user
+      flash[:alert] = "Please log in to continue."
+      flash.keep # Ensures flash persists across redirects
+      redirect_to sign_in_path
+    end
   end
 end

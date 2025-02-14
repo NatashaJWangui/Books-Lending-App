@@ -1,12 +1,14 @@
 <% password_digest = BCrypt::Password.create("password") %>
 
 one:
+  name: One
   email: one@example.com
   password_digest: <%= password_digest %>
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
 
 two:
+  name: Two
   email: two@example.com
   password_digest: <%= password_digest %>
   created_at: <%= Time.now %>

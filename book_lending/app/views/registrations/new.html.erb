@@ -2,29 +2,36 @@
   <div class="w-full max-w-sm p-8 bg-white rounded-xl shadow-md border border-blue-600">
     <h2 class="text-center text-blue-600 text-3xl font-bold mb-6">Sign Up</h2>
 
+    <!-- Display flash messages -->
+    <% if flash[:alert].present? %>
+      <div class="text-red-500 text-sm mb-4">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+
     <%= form_with model: @user, url: registration_path, local: true, class: "space-y-4" do |form| %>
       <!-- Name Field -->
       <div>
         <%= form.label :name, class: "block text-gray-600 font-semibold mb-2" %>
-        <%= form.text_field :name, required: true, autofocus: true, placeholder: "Enter your name", class: "w-full mt-1 px-3 py-2 border border-black rounded-xl focus:outline-none focus:ring focus:ring-blue-300" %>
+        <%= form.text_field :name, autofocus: true, placeholder: "Enter your name", class: "w-full mt-1 px-3 py-2 border border-black rounded-xl focus:outline-none focus:ring focus:ring-blue-300" %>
       </div>
 
       <!-- Email Field -->
       <div>
         <%= form.label :email, class: "block text-gray-600 font-semibold mb-2" %>
-        <%= form.email_field :email, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email", class: "w-full mt-1 px-3 py-2 border border-black rounded-xl focus:outline-none focus:ring focus:ring-blue-300" %>
+        <%= form.email_field :email,  autofocus: true, autocomplete: "username", placeholder: "Enter your email", class: "w-full mt-1 px-3 py-2 border border-black rounded-xl focus:outline-none focus:ring focus:ring-blue-300" %>
       </div>
 
       <!-- Password Field -->
       <div>
         <%= form.label :password, class: "block text-gray-600 font-semibold mb-2" %>
-        <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter your password", maxlength: 72, class: "w-full mt-1 px-3 py-2 border border-black rounded-xl focus:outline-none focus:ring focus:ring-blue-300" %>
+        <%= form.password_field :password,autocomplete: "new-password", placeholder: "Enter your password", maxlength: 72, class: "w-full mt-1 px-3 py-2 border border-black rounded-xl focus:outline-none focus:ring focus:ring-blue-300" %>
       </div>
 
       <!-- Password Confirmation -->
       <div>
         <%= form.label :password_confirmation, class: "block text-gray-600 font-semibold mb-2" %>
-        <%= form.password_field :password_confirmation, required: true, placeholder: "Confirm your password", maxlength: 72, class: "w-full mt-1 px-3 py-2 border border-black rounded-xl focus:outline-none focus:ring focus:ring-blue-300" %>
+        <%= form.password_field :password_confirmation,placeholder: "Confirm your password", maxlength: 72, class: "w-full mt-1 px-3 py-2 border border-black rounded-xl focus:outline-none focus:ring focus:ring-blue-300" %>
       </div>
 
       <!-- Submit Button -->
