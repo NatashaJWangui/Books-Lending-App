@@ -1,19 +1,49 @@
 require "test_helper"
 
 class BookTest < ActiveSupport::TestCase
-  test "should not save book without title" do
-    book = Book.new(author: "John Doe", isbn: "123456789")
-    assert_not book.save, "Saved the book without a title"
+  def setup
+    @book = Book.new(title: "The Firm", author: "John Grisham", isbn: "9780385416344")
   end
 
-  test "should not save book without author" do
-    book = Book.new(title: "Test Book", isbn: "123456789")
-    assert_not book.save, "Saved the book without an author"
+  test "should be valid with valid attributes" do
+    assert @book.valid?
   end
 
-  test "should not save book with duplicate ISBN" do
-    book1 = Book.create(title: "Book One", author: "Author A", isbn: "111111")
-    book2 = Book.new(title: "Book Two", author: "Author B", isbn: "111111")
-    assert_not book2.save, "Saved a book with duplicate ISBN"
+  test "should be invalid without a title" do
+    @book.title = ""
+    assert_not @book.valid?
+    assert_includes @book.errors[:title], "cannot be blank"
+  end
+
+  test "should be invalid without an author" do
+    @book.author = ""
+    assert_not @book.valid?
+    assert_includes @book.errors[:author], "cannot be blank"
+  end
+
+  test "should be invalid without an isbn" do
+    @book.isbn = ""
+    assert_not @book.valid?
+    assert_includes @book.errors[:isbn], "cannot be blank"
+  end
+
+  test "should have a unique isbn" do
+    duplicate_book = @book.dup
+    @book.save
+    assert_not duplicate_book.valid?
+    assert_includes duplicate_book.errors[:isbn], "must be unique"
+  end
+
+  test "should be available when no active borrows exist" do
+    @book.save
+    assert @book.available?
+  end
+
+  test "should not be available if there is an active borrow" do
+    @book.save
+    user = User.create!(name: "Test User", email: "test@example.com", password: "password123")
+    Borrow.create!(book: @book, user: user, borrowed_at: Time.now, returned_at: nil)
+
+    assert_not @book.available?
   end
 end

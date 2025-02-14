@@ -8,4 +8,6 @@ class User < ApplicationRecord
   normalizes :email, with: ->(e) { e.strip.downcase }
   validates :name, presence: true
   validates :email, presence: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i, message: "is invalid" }
+  validates :password, length: { minimum: 6, message: "must be at least 6 characters long" }
+
 end
