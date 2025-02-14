@@ -7,6 +7,16 @@ module ActiveSupport
     # Run tests in parallel with specified workers
     parallelize(workers: :number_of_processors)
 
+    # Ensure database transactions for test isolation
+    setup do
+      DatabaseCleaner.strategy = :transaction
+      DatabaseCleaner.start
+    end
+
+    teardown do
+      DatabaseCleaner.clean
+    end
+
     # Load all fixtures from test/fixtures/*.yml for all tests
     fixtures :all
 

@@ -25,7 +25,7 @@
 
   <!-- Book Description -->
   <p class="mt-4 text-gray-600 italic text-md">
-    <%= @book.description.presence || "No description available for this book." %>
+    <strong>Description:</strong><%= @book.description.presence || "No description available for this book." %>
   </p>
 
   <!-- Availability Status -->
@@ -43,9 +43,8 @@
     <% if @book.available? %>
       <% if Current.user.borrows.where(returned_at: nil).exists? %>
         <!-- Button when user has an unreturned book -->
-        <button onclick="alert('You must return your current book before borrowing another one.')" 
-            class="bg-green-500 text-white px-4 py-2 rounded-xl shadow-md font-bold cursor-not-allowed">
-          Borrow Book
+        <button class="bg-gray-500 text-white px-4 py-2 rounded-xl shadow-md font-bold cursor-not-allowed" disabled>
+          You must return your current book before borrowing another one.
         </button>
       <% else %>
         <!-- Normal Borrow Button with Confirmation -->
@@ -53,7 +52,7 @@
           class="bg-green-500 text-white px-4 py-2 rounded-xl shadow-md font-bold">
           Borrow Book
         </button>
-
+  
         <%= form_with url: book_borrow_path(@book), method: :post, style: "display: none;" do %>
         <% end %>
       <% end %>  
@@ -66,7 +65,7 @@
         class="px-4 py-2 bg-green-500 text-white font-bold rounded-xl shadow-md hover:bg-green-600">
         Return
       </button>
-
+  
       <%= form_with url: borrow_path(@book.borrows.find_by(user_id: Current.user.id, returned_at: nil)), method: :patch, style: "display: none;" do |f| %>
       <% end %>
     <% end %>
@@ -78,3 +77,4 @@
     <%= link_to "Return to Dashboard", dashboard_path, class: "bg-blue-600 text-white font-semibold px-4 py-2 rounded-xl shadow-md hover:bg-green-700" %>
   </div>
 </div>
+  

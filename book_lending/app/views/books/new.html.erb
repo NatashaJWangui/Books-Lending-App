@@ -6,14 +6,14 @@
       ✅ <%= flash[:notice] %>
     </div>
   <% elsif flash[:alert] %>
-    <div class="text-red-600 p-4 rounded-xl shadow-md mb-2">
+    <div class="text-red-500 p-4 rounded-xl shadow-md mb-2">
       🚨 <%= flash[:alert] %>
     </div>
   <% end %>
 
   <!-- Error Messages -->
   <% if @book.errors.any? %>
-    <div class="text-red-600 p-4 rounded-xl shadow-md">
+    <div class="text-red-500 p-4 rounded-xl shadow-md">
       <ul class="list-none pl-5">
         <% @book.errors.full_messages.each do |message| %>
           <li>❌ <%= message %></li>
@@ -27,19 +27,19 @@
     <!-- Title -->
     <div>
       <%= form.label :title, class: "block font-bold text-blue-600" %>
-      <%= form.text_field :title, class: "text-center font-semibold w-full p-2 border border-black rounded-xl focus:ring-2 focus:ring-blue-500", required: true %>
+      <%= form.text_field :title, class: "text-center font-semibold w-full p-2 border border-black rounded-xl focus:ring-2 focus:ring-blue-500"%>
     </div>
 
     <!-- Author -->
     <div>
       <%= form.label :author, class: "block font-bold text-blue-600" %>
-      <%= form.text_field :author, class: "w-full font-semibold text-center p-2 border rounded-xl focus:ring-2 focus:ring-blue-500", required: true %>
+      <%= form.text_field :author, class: "w-full font-semibold text-center p-2 border rounded-xl focus:ring-2 focus:ring-blue-500"%>
     </div>
 
     <!-- ISBN -->
     <div>
       <%= form.label :isbn, "ISBN", class: "block font-bold text-blue-600" %>
-      <%= form.text_field :isbn, class: "w-full font-semibold p-2 text-center border rounded-xl focus:ring-2 focus:ring-blue-500", required: true %>
+      <%= form.text_field :isbn, class: "w-full font-semibold p-2 text-center border rounded-xl focus:ring-2 focus:ring-blue-500"%>
     </div>
 
     <!-- Image URL -->

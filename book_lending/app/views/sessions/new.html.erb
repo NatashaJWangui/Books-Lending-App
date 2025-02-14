@@ -13,12 +13,12 @@
     <%= form_with url: sign_in_path, local: true, class: "space-y-4" do |form| %>
       <div>
         <%= form.label :email, class: "block text-gray-600 font-semibold mb-2" %>
-        <%= form.email_field :email, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email", value: params[:email], class: "w-full mt-1 px-3 py-2 border border-black rounded-xl focus:outline-none focus:ring focus:ring-blue-300" %>
+        <%= form.email_field :email, autofocus: true, autocomplete: "username", placeholder: "Enter your email", value: params[:email], class: "w-full mt-1 px-3 py-2 border border-black rounded-xl focus:outline-none focus:ring focus:ring-blue-300" %>
       </div>
 
       <div>
         <%= form.label :password, class: "block text-gray-600 font-semibold mb-2" %>
-        <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "w-full mt-1 px-3 py-2 border border-black rounded-xl focus:outline-none focus:ring focus:ring-blue-300" %>
+        <%= form.password_field :password, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "w-full mt-1 px-3 py-2 border border-black rounded-xl focus:outline-none focus:ring focus:ring-blue-300" %>
       </div>
 
       <div>
