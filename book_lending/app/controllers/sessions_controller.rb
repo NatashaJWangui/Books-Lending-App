@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  skip_forgery_protection only: :destroy, if: -> { Rails.env.development? }
   allow_unauthenticated_access only: %i[ new create ]
   rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_session_url, alert: "Try again later." }
 
@@ -17,6 +18,7 @@ class SessionsController < ApplicationController
 
   def destroy
     reset_session
-    redirect_to sign_in_path, notice: "You have been logged out successfully."
+    flash[:notice] = "You have been logged out successfully."
+    redirect_to sign_in_path
   end
 end
