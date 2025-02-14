@@ -15,9 +15,10 @@ This is a simple Ruby on Rails 8 book lending system where users can register, b
 
 ## Requirements
 
-- Ruby 3.4.1
-- Rails 8.0.1
-- PostgreSQL 16.6 (or your preferred database)
+- **OS**: Linux (Ubuntu recommended), macOS, or Windows with WSL
+- **Ruby**: 3.4.1
+- **Rails**: 8.0.1
+- **PostgreSQL**: 16.6 (or your preferred database)
 
 ## Setup
 
@@ -51,10 +52,12 @@ To edit, add, or delete a book, you'll need an admin user. Create one with the f
 - **Password**: password123 (or any password you prefer).
     
 # Main Routes
+
    * /books
    * /borrows
 
 # Run Tests
+
 This app uses the default Rails testing framework.
 1. To run all tests:
     rails test
@@ -63,4 +66,5 @@ This app uses the default Rails testing framework.
     bin/rails test test/views/books/books_edit_test.rb
 
 # Contributing
+
 Feel free to open issues or submit pull requests for any improvements!
