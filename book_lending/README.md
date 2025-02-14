@@ -58,7 +58,7 @@ To edit, add, or delete a book, you'll need an admin user. Create one with the f
 
 # Run Tests
 
-This app uses the default Rails testing framework.
+This app uses the default Rails testing framework(Minitest).
 1. To run all tests:
     rails test
 
