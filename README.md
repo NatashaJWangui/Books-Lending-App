@@ -35,15 +35,15 @@ This is a simple Ruby on Rails 8 book lending system where users can register, b
 4. Setup the database:
     rails db:create db:migrate
 
-    # Optional: If you have seed data, you can populate the database using:
-    # rails db:seed
+    ## Optional: If you have seed data, you can populate the database using:
+    ## rails db:seed
 
 5. Start the server :
     rails server
 
 Open your browser and visit http://localhost:3000. It will initially redirect you to http://localhost:3000/sign_in.
 
-### Admin CRUD Operations
+## Admin CRUD Operations
 
 To edit, add, or delete a book, you'll need an admin user. Create one with the following credentials:
 
@@ -51,12 +51,12 @@ To edit, add, or delete a book, you'll need an admin user. Create one with the f
 - **Email**: admin@example.com
 - **Password**: password123 (or any password you prefer).
     
-# Main Routes
+## Main Routes
 
    * /books
    * /borrows
 
-# Run Tests
+## Run Tests
 
 This app uses the default Rails testing framework(Minitest).
 1. To run all tests:
@@ -65,6 +65,6 @@ This app uses the default Rails testing framework(Minitest).
 2. To run tests for specific controllers, views, or models, use:
     bin/rails test test/views/books/books_edit_test.rb
 
-# Contributing
+## Contributing
 
 Feel free to open issues or submit pull requests for any improvements!
